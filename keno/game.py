@@ -131,7 +131,7 @@ def game():
         txt_money.draw()
         txt_payout.draw()
 
-
+        clock.tick(30)
         pygame.display.update()
 
 if __name__ == "__main__":
