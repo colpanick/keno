@@ -1,7 +1,7 @@
 import pygame
 
 from keno import screen, clock, engine, BLACK, WHITE, BLUE, RED, GREEN
-from keno.buttons import Button
+from keno.controls import Button
 from keno.boards import TileBoard, RewardsBoard
 
 
@@ -52,9 +52,21 @@ def game():
     money = 25
     bet = 1
 
-    background_image = pygame.image.load(r"assets\bg.jpg")
-    tile_board = TileBoard(screen, 100, 100)
+    background_image = pygame.image.load(r"assets\game_bg.jpg")
+
+    title_image = pygame.image.load(r"assets\title.png")
+    title_coords = title_image.get_rect()
+    title_coords.center = (1024/2, 75)
+
+    tile_board = TileBoard(screen, 100, 175)
+    tile_unselected = pygame.image.load(r"assets\tiles_round\black.png")
+    tile_selected = pygame.image.load(r"assets\tiles_round\blue.png")
+    tile_hit = pygame.image.load(r"assets\tiles_round\red.png")
+    tile_picked = pygame.image.load(r"assets\tiles_round\green.png")
+    tile_board.load_images(tile_unselected, tile_selected, tile_hit, tile_picked)
+
     reward_board = RewardsBoard(screen, tile_board.right + 50, tile_board.top, tile_board, 22)
+
     button_play = Button(screen, tile_board.left, tile_board.bottom + 15, 100, 40, "Play")
     button_auto = Button(screen, button_play.right + 10, tile_board.bottom + 15, 100, 40, "Auto-Pick")
     button_clear = Button(screen, button_auto.right + 10, tile_board.bottom + 15, 100, 40, "Clear")
@@ -114,6 +126,7 @@ def game():
 
         screen.fill(BLACK)
         screen.blit(background_image, (0,0))
+        screen.blit(title_image, (title_coords))
 
         tile_board.draw_tiles()
         reward_board.update()

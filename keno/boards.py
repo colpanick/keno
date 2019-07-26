@@ -1,9 +1,9 @@
 import pygame
-from keno.buttons import Tile
+from keno.controls import Tile
 from keno import engine, RED, GREEN, BLUE, WHITE
 
 class TileBoard():
-    def __init__(self, screen, x, y, dimensions=(10, 8), max_selection=10, tile_size=50, tile_padding=5):
+    def __init__(self, screen, x, y, tile_size=50, tile_padding=5,dimensions=(10, 8), max_selection=10):
         self.screen = screen
         self.x = x
         self.y = y
@@ -16,6 +16,12 @@ class TileBoard():
         self._selected_tiles = []
         self._picked_tiles = []
         self._hit_tiles = []
+
+        self.images = False
+        self.unselected_image = None
+        self.selected_image = None
+        self.hit_image = None
+        self.picked_image = None
 
     @property
     def selected_tiles(self):
@@ -63,19 +69,50 @@ class TileBoard():
         for _, tile in self.tiles.items():
             tile.draw()
 
+    def load_images(self, unselected, selected, hit, picked):
+        self.unselected_image = unselected
+        self.selected_image = selected
+        self.hit_image = hit
+        self.picked_image = picked
+
+        if self.tile_size:
+            for image in [self.unselected_image, self.selected_image, self.hit_image, self.picked_image]:
+                pygame.transform.scale(image, (self.tile_size, self.tile_size))
+
+        self.images = True
+        self.clear_all()
+
+    def unload_images(self):
+        self.unselected_image = None
+        self.selected_image = None
+        self.hit_image = None
+        self.picked_image = None
+
+        self.images = False
+
     def mark_tile_selected(self, tile_num):
         if len(self._selected_tiles) < self.max_selection:
             tile = self.tiles[tile_num]
-            tile.color = BLUE
-            tile.bcolor = GREEN
-            tile.tcolor = GREEN
+
+            if self.images:
+                tile.image = self.selected_image
+            else:
+                tile.color = BLUE
+                tile.bcolor = GREEN
+                tile.tcolor = GREEN
+
             self._selected_tiles.append(tile)
 
     def mark_tile_unselected(self, tile_num):
         tile = self.tiles[tile_num]
-        tile.color = BLUE
-        tile.bcolor = WHITE
-        tile.tcolor = WHITE
+
+        if self.images:
+            tile.image = self.unselected_image
+        else:
+            tile.color = BLUE
+            tile.bcolor = WHITE
+            tile.tcolor = WHITE
+
         try:
             self._selected_tiles.remove(tile)
         except ValueError:
@@ -83,16 +120,24 @@ class TileBoard():
 
     def mark_tile_picked(self, tile_num):
         tile = self.tiles[tile_num]
-        tile.color = RED
-        tile.bcolor = BLUE
-        tile.tcolor = WHITE
+
+        if self.images:
+            tile.image = self.picked_image
+        else:
+            tile.color = RED
+            tile.bcolor = BLUE
+            tile.tcolor = WHITE
+
         self._picked_tiles.append(tile)
 
     def mark_tile_hit(self, tile_num):
         tile = self.tiles[tile_num]
-        tile.color = GREEN
-        tile.bcolor = BLUE
-        tile.tcolor = WHITE
+        if self.images:
+            tile.image = self.hit_image
+        else:
+            tile.color = GREEN
+            tile.bcolor = BLUE
+            tile.tcolor = WHITE
         self._hit_tiles.append(tile)
 
     def clear_all(self):
@@ -124,6 +169,7 @@ class TileBoard():
     def enable(self):
         for _, tile in self.tiles.items():
             tile.enable()
+
 
 class RewardsBoard:
     def __init__(self, screen, x, y, tile_board, font_size):

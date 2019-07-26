@@ -3,16 +3,17 @@ import json
 
 PAYOUT_FILE = r"assets/payout_generous.json"
 
-def get_random_list(size):
+def get_random_list(size, numbers=(1,80)):
     '''
-    Returns a list of unique random numbers between 1 and 80
+    Returns a list of unique random numbers between range in numbers
 
     :param size: int size of list you want
+    :param_range: tuple of the range the numbers should be picked from.
     :return: list
     '''
 
     # Not the most efficient way to do this, but I feel like this best simulates a lotto drawing
-    pool = list(range(1,80))
+    pool = list(range(numbers[0], numbers[1] + 1))
     results = []
     for _ in range(size):
         ball = pool.pop(random.randint(0,len(pool)-1))

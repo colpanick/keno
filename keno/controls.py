@@ -2,17 +2,13 @@ import pygame
 
 from keno import WHITE, BLUE, RED, GREEN
 
-class Button():
-    def __init__(self,screen, x, y, w, h, msg, color=(BLUE), bcolor=(WHITE), tcolor=(WHITE)):
+class Control():
+    def __init__(self, screen, x, y, w, h):
         self.screen = screen
         self.x = x
         self.y = y
         self.w = w
         self.h = h
-        self.msg = msg
-        self.color = color
-        self.bcolor = bcolor
-        self.tcolor = tcolor
         self.enabled = True
 
     @property
@@ -48,29 +44,48 @@ class Button():
     def activated(self, coords):
         return self.in_zone(coords) and self.enabled
 
+
+class Button(Control):
+
+    def __init__(self,screen, x, y, w, h, msg, color=(BLUE), bcolor=(WHITE), tcolor=(WHITE), image=None):
+        super().__init__(screen, x, y, w, h)
+        self.msg = msg
+        self.color = color
+        self.bcolor = bcolor
+        self.tcolor = tcolor
+        self.image = image
+
     def draw(self):
         tile_font = pygame.font.SysFont("comicsansms", round(self.h * .5))
         text = tile_font.render(self.msg, True, self.tcolor)
         textRect = text.get_rect()
         textRect.center = (self.x + self.w / 2, self.y + self.h / 2)
-        pygame.draw.rect(self.screen, self.color, pygame.Rect(self.x, self.y, self.w, self.h))
-        pygame.draw.rect(self.screen, self.bcolor, pygame.Rect(self.x, self.y, self.w, self.h), 2)
+        if self.image:
+            pass
+        else:
+            pygame.draw.rect(self.screen, self.color, pygame.Rect(self.x, self.y, self.w, self.h))
+            pygame.draw.rect(self.screen, self.bcolor, pygame.Rect(self.x, self.y, self.w, self.h), 2)
 
 
         self.screen.blit(text, textRect)
 
 class Tile(Button):
-    def __init__(self, screen, x, y, size, number):
-        super().__init__(screen, x, y, size, size, str(number))
+    def __init__(self, screen, x, y, size, number, image=None):
+        super().__init__(screen, x, y, size, size, str(number), image=None)
         self.number = number
+
 
     def draw(self):
         tile_font = pygame.font.SysFont("comicsansms", round(self.h * .5))
         text = tile_font.render(self.msg, True, self.tcolor)
         textRect = text.get_rect()
         textRect.center = (self.x + self.w / 2, self.y + self.h / 2)
-        pygame.draw.rect(self.screen, self.color, pygame.Rect(self.x, self.y, self.w, self.h))
-        pygame.draw.rect(self.screen, self.bcolor, pygame.Rect(self.x, self.y, self.w, self.h), 2)
+
+        if self.image:
+            self.screen.blit(self.image, (self.x, self.y))
+        else:
+            pygame.draw.rect(self.screen, self.color, pygame.Rect(self.x, self.y, self.w, self.h))
+            pygame.draw.rect(self.screen, self.bcolor, pygame.Rect(self.x, self.y, self.w, self.h), 2)
 
 
         self.screen.blit(text, textRect)
