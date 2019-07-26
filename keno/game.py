@@ -48,11 +48,12 @@ def play(board):
         else:
             board.mark_tile_picked(pick)
 
-def game():
-    money = 25
+def game(money):
     bet = 1
 
     background_image = pygame.image.load(r"assets\game_bg.jpg")
+
+    button_menu = Button(screen, 1024-50, 0, 50, 25, "Menu", BLACK)
 
     title_image = pygame.image.load(r"assets\title.png")
     title_coords = title_image.get_rect()
@@ -84,9 +85,12 @@ def game():
     while not done:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                done = True
+                exit()
             if event.type == pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pressed()[0]:
                 pos = pygame.mouse.get_pos()
+
+                if button_menu.activated(pos):
+                    done = True
 
                 tile_board.process_click(pos)
 
@@ -126,6 +130,7 @@ def game():
 
         screen.fill(BLACK)
         screen.blit(background_image, (0,0))
+        button_menu.draw()
         screen.blit(title_image, (title_coords))
 
         tile_board.draw_tiles()
@@ -147,6 +152,37 @@ def game():
         clock.tick(30)
         pygame.display.update()
 
+def menu():
+    title_image = pygame.image.load(r"assets\title.png")
+    title_coords = title_image.get_rect()
+    title_coords.center = (1024 / 2, 75)
+    button_game = Button(screen, 100, 175, 200, 50, "New Game")
+    button_quit = Button(screen, button_game.left, button_game.bottom + 10, 200, 50, "Quit")
+    background_image = pygame.image.load(r"assets\menu_bg.jpg")
+
+    done = False
+
+    while not done:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                done = True
+            if event.type == pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pressed()[0]:
+                pos = pygame.mouse.get_pos()
+
+                if button_game.activated(pos):
+                    game(30)
+                elif button_quit.activated(pos):
+                    done = True
+
+        screen.fill(BLACK)
+        screen.blit(background_image, (0,0))
+        screen.blit(title_image, title_coords)
+        button_game.draw()
+        button_quit.draw()
+
+        clock.tick(30)
+        pygame.display.update()
+
 if __name__ == "__main__":
 
-    game()
+    menu()
