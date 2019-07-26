@@ -1,42 +1,9 @@
 import pygame
 
 from keno import screen, clock, engine, BLACK, WHITE, BLUE, RED, GREEN
-from keno.controls import Button
+from keno.controls import Button, Text, Image
 from keno.boards import TileBoard, RewardsBoard
 
-
-
-class Text:
-    def __init__(self, screen, x, y, w, h, msg, color=WHITE, size=22):
-        self.screen = screen
-        self.x = x
-        self.y = y
-        self.w = w
-        self.h = h
-        self.msg = msg
-        self.color = color
-        self.size = size
-
-    @property
-    def left(self):
-        return self.x
-
-    @property
-    def right(self):
-        return self.x + self.w
-
-    @property
-    def top(self):
-        return self.y
-
-    @property
-    def bottom(self):
-        return self.y + self.h
-
-    def draw(self):
-        font = pygame.font.SysFont("comicsansms", self.size)
-        text = font.render(self.msg, True, self.color)
-        self.screen.blit(text, (self.x,self.y,self.w,self.h))
 
 def play(board):
     picks = engine.get_random_list(20)
@@ -55,9 +22,7 @@ def game(money):
 
     button_menu = Button(screen, 1024-50, 0, 50, 25, "Menu", BLACK)
 
-    title_image = pygame.image.load(r"assets\title.png")
-    title_coords = title_image.get_rect()
-    title_coords.center = (1024/2, 75)
+    title_image = Image(screen, 250, 35, r"assets\title.png")
 
     tile_board = TileBoard(screen, 100, 175)
     tile_unselected = pygame.image.load(r"assets\tiles_round\black.png")
@@ -76,8 +41,8 @@ def game(money):
     button_bet = Button(screen, button_bet_up.right + 10, button_play.bottom + 20, 60, 40, str(bet), BLACK)
     button_bet_down = Button(screen, button_bet.right + 10, button_play.bottom + 20, 60, 40, "Down")
 
-    txt_money = Text(screen, button_clear.right + 40, button_clear.top, 150, 25, f"Money: ${money}")
-    txt_payout = Text(screen, tile_board.right + 50, tile_board.bottom - tile_board.tile_size, 150, 22, "Won: $0")
+    txt_money = Text(screen, button_clear.right + 40, button_clear.top, f"Money: ${money}")
+    txt_payout = Text(screen, tile_board.right + 50, tile_board.bottom - tile_board.tile_size, "Won: $0")
 
 
 
@@ -131,7 +96,7 @@ def game(money):
         screen.fill(BLACK)
         screen.blit(background_image, (0,0))
         button_menu.draw()
-        screen.blit(title_image, (title_coords))
+        title_image.draw()
 
         tile_board.draw_tiles()
         reward_board.update()
@@ -153,9 +118,7 @@ def game(money):
         pygame.display.update()
 
 def menu():
-    title_image = pygame.image.load(r"assets\title.png")
-    title_coords = title_image.get_rect()
-    title_coords.center = (1024 / 2, 75)
+    title_image = Image(screen, 250, 35, r"assets\title.png")
     button_game = Button(screen, 100, 175, 200, 50, "New Game")
     button_quit = Button(screen, button_game.left, button_game.bottom + 10, 200, 50, "Quit")
     background_image = pygame.image.load(r"assets\menu_bg.jpg")
@@ -176,7 +139,7 @@ def menu():
 
         screen.fill(BLACK)
         screen.blit(background_image, (0,0))
-        screen.blit(title_image, title_coords)
+        title_image.draw()
         button_game.draw()
         button_quit.draw()
 
