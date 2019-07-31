@@ -154,9 +154,9 @@ class TileBoard():
             self.mark_tile_selected(tile)
 
     def process_click(self, coords):
-        self.clear_picks()
         for tile_num, tile in self.tiles.items():
             if tile.activated(coords):
+                self.clear_picks()
                 if tile in self._selected_tiles:
                     self.mark_tile_unselected(tile_num)
                 else:

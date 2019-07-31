@@ -110,7 +110,7 @@ def game(money):
         button_bet.msg = str(bet)
         button_bet.draw()
         button_bet_down.draw()
-        txt_money.msg = f"Money: {money}"
+        txt_money.new_msg(f"Money: {money}")
         txt_money.draw()
         txt_payout.draw()
 
