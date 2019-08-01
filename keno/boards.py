@@ -69,6 +69,9 @@ class TileBoard():
         for _, tile in self.tiles.items():
             tile.draw()
 
+    def draw_tile(self, num):
+        self.tiles[num].draw()
+
     def load_images(self, unselected, selected, hit, picked):
         self.unselected_image = unselected
         self.selected_image = selected

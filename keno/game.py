@@ -1,3 +1,5 @@
+from time import sleep
+
 import pygame
 
 from keno import screen, clock, engine, BLACK, WHITE, BLUE, RED, GREEN
@@ -5,15 +7,20 @@ from keno.controls import Button, Text, Image
 from keno.boards import TileBoard, RewardsBoard
 
 
+
 def play(board):
     picks = engine.get_random_list(20)
     selections = board.selected_tiles
-
+    board.draw_tiles()
     for pick in picks:
+        sleep(.25)
         if pick in selections:
             board.mark_tile_hit(pick)
         else:
             board.mark_tile_picked(pick)
+        board.draw_tile(pick)
+        pygame.display.update()
+
 
 def game(money):
     bet = 1
