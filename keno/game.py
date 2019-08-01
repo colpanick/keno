@@ -27,7 +27,8 @@ def game(money):
 
     background_image = pygame.image.load(r"assets\game_bg.jpg")
 
-    button_menu = Button(screen, 1024-50, 0, 50, 25, "Menu", BLACK)
+    img_menu = pygame.image.load(r"assets\tiles_round\orange.png")
+    button_menu = Button(screen, 1024-50, 0, 50, 25, "Menu", BLACK, image=img_menu)
 
     image_title = Image(screen, 250, 35, r"assets\title.png")
 

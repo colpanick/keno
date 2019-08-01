@@ -27,7 +27,6 @@ class Control():
     def bottom(self):
         return self.y + self.h
 
-
     def enable(self):
         self.enabled = True
 
@@ -53,15 +52,27 @@ class Button(Control):
         self.color = color
         self.bcolor = bcolor
         self.tcolor = tcolor
-        self.image = image
+        self.__image = image
+        if self.__image:
+            self.w, self.h = self.__image.get_rect()[2:]
+
+    @property
+    def image(self):
+        return self.__image
+
+    @image.setter
+    def image(self, image):
+        self.__image = image
+        self.w, self.h = self.__image.get_rect()[2:]
 
     def draw(self):
         tile_font = pygame.font.SysFont("comicsansms", round(self.h * .5))
         text = tile_font.render(self.msg, True, self.tcolor)
         textRect = text.get_rect()
         textRect.center = (self.x + self.w / 2, self.y + self.h / 2)
-        if self.image:
-            pass
+
+        if self.__image:
+            self.screen.blit(self.__image, (self.x, self.y))
         else:
             pygame.draw.rect(self.screen, self.color, pygame.Rect(self.x, self.y, self.w, self.h))
             pygame.draw.rect(self.screen, self.bcolor, pygame.Rect(self.x, self.y, self.w, self.h), 2)
@@ -75,20 +86,7 @@ class Tile(Button):
         self.number = number
 
 
-    def draw(self):
-        tile_font = pygame.font.SysFont("comicsansms", round(self.h * .5))
-        text = tile_font.render(self.msg, True, self.tcolor)
-        textRect = text.get_rect()
-        textRect.center = (self.x + self.w / 2, self.y + self.h / 2)
 
-        if self.image:
-            self.screen.blit(self.image, (self.x, self.y))
-        else:
-            pygame.draw.rect(self.screen, self.color, pygame.Rect(self.x, self.y, self.w, self.h))
-            pygame.draw.rect(self.screen, self.bcolor, pygame.Rect(self.x, self.y, self.w, self.h), 2)
-
-
-        self.screen.blit(text, textRect)
 
 class Text(Control):
     def __init__(self, screen, x, y, msg, font_name="comicsansms", color=WHITE, size=22):
