@@ -73,7 +73,7 @@ def game(money):
                         play(tile_board)
                         payout = engine.get_payout(len(tile_board.selected_tiles), len(tile_board.hit_tiles), bet)
                         money += payout
-                        txt_payout.msg = f"Won: ${payout}"
+                        txt_payout.new_msg(f"Won: ${payout}")
                         if bet > money:
                             bet = money
                         if money < 1:
