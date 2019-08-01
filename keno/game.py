@@ -22,7 +22,7 @@ def game(money):
 
     button_menu = Button(screen, 1024-50, 0, 50, 25, "Menu", BLACK)
 
-    title_image = Image(screen, 250, 35, r"assets\title.png")
+    image_title = Image(screen, 250, 35, r"assets\title.png")
 
     tile_board = TileBoard(screen, 100, 175)
     tile_unselected = pygame.image.load(r"assets\tiles_round\black.png")
@@ -96,7 +96,7 @@ def game(money):
         screen.fill(BLACK)
         screen.blit(background_image, (0,0))
         button_menu.draw()
-        title_image.draw()
+        image_title.draw()
 
         tile_board.draw_tiles()
         reward_board.update()
@@ -118,7 +118,7 @@ def game(money):
         pygame.display.update()
 
 def menu():
-    title_image = Image(screen, 250, 35, r"assets\title.png")
+    image_title = Image(screen, 250, 35, r"assets\title.png")
     button_game = Button(screen, 100, 175, 200, 50, "New Game")
     button_quit = Button(screen, button_game.left, button_game.bottom + 10, 200, 50, "Quit")
     background_image = pygame.image.load(r"assets\menu_bg.jpg")
@@ -139,7 +139,7 @@ def menu():
 
         screen.fill(BLACK)
         screen.blit(background_image, (0,0))
-        title_image.draw()
+        image_title.draw()
         button_game.draw()
         button_quit.draw()
 
