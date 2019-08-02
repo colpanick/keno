@@ -197,13 +197,13 @@ class RewardsBoard:
 
         y_modifier = 0
         for hits, reward in self.rewards.items():
-            if show_reward_hit and int(hits) == len(self.board.hit_tiles):
+            if show_reward_hit and hits == len(self.board.hit_tiles):
                 font_color = GREEN
             else:
                 font_color = WHITE
             font = pygame.font.SysFont("comicsansms", self.font_size)
-            hits_text = font.render(hits, True, font_color)
-            reward_text = font.render(reward, True, font_color)
+            hits_text = font.render(str(hits), True, font_color)
+            reward_text = font.render(str(reward), True, font_color)
             text_h = hits_text.get_rect()[3]
 
             self.screen.blit(hits_text,(self.x, self.y + y_modifier, 50, text_h))

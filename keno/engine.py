@@ -1,7 +1,66 @@
 import random
 import json
 
-PAYOUT_FILE = r"assets/payout_generous.json"
+payouts = {
+       1 : {
+           1 : 2
+        },
+       2 : {
+           2 : 9,
+           1 : 1
+        },
+       3 : {
+           3 : 47,
+           2 : 2
+        },
+       4 : {
+           4 : 91,
+           3 : 5,
+           2 : 1
+        },
+       5 : {
+           5 : 820,
+           4 : 12,
+           3 : 3
+        },
+       6 : {
+           6 : 1600,
+           5 : 70,
+           4 : 4,
+           3 : 3
+        },
+       7 : {
+           7 : 7000,
+           6 : 400,
+           5 : 21,
+           4 : 2,
+           3 : 1
+        },
+       8 : {
+           8 : 10000,
+           7 : 1650,
+           6 : 100,
+           5 : 12,
+           4 : 2
+        },
+       9 : {
+           9 : 10000,
+           8 : 4700,
+           7 : 335,
+           6 : 44,
+           5 : 6,
+           4 : 1
+        },
+       10 : {
+           10 : 10000,
+           9 : 4500,
+           8 : 1000,
+           7 : 142,
+           6 : 24,
+           5 : 5,
+           0 : 3
+        }
+    }
 
 def get_random_list(size, numbers=(1,80)):
     '''
@@ -30,15 +89,12 @@ def get_payout(num_selections, num_matches, bet=1):
     :param bet: int amount bet
     :return: int payout based on json file
     '''
-    with open(PAYOUT_FILE, "r") as pay_file:
-        num_selections = str(num_selections)
-        num_matches = str(num_matches)
-        payouts = json.load(pay_file)
-        try:
-            payout = int(payouts[num_selections][num_matches])
-        except KeyError:
-            payout = 0
-        return payout * bet
+
+    try:
+        payout = payouts[num_selections][num_matches]
+    except KeyError:
+        payout = 0
+    return payout * bet
 
 def get_payout_list(num_selections):
     '''
@@ -47,10 +103,8 @@ def get_payout_list(num_selections):
     :param num_selections: int Number of selections
     :return: dict
     '''
-    with open(r"assets/payout_generous.json", "r") as pay_file:
-        payouts = json.load(pay_file)
-    num_selections = str(num_selections)
-    if num_selections == '0':
+
+    if num_selections == 0:
         return {}
     retval = payouts[num_selections]
     return retval
