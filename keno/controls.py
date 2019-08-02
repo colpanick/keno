@@ -93,7 +93,7 @@ class Text(Control):
         self.screen = screen
         self.x = x
         self.y = y
-        self.msg = msg
+        self.__msg = msg
 
         self.font_name = font_name
         self.color = color
@@ -105,10 +105,16 @@ class Text(Control):
 
         super().__init__(screen, x, y, self.w, self.h)
 
-    def new_msg(self, msg):
-        self.msg = msg
-        self.text = self.font.render(self.msg, True, self.color)
+    @property
+    def msg(self):
+        return self.__msg
+
+    @msg.setter
+    def msg(self, msg):
+        self.__msg = msg
+        self.text = self.font.render(self.__msg, True, self.color)
         self.w, self.h = self.text.get_rect()[2:]
+
 
     def draw(self):
         self.screen.blit(self.text, (self.x,self.y,self.w,self.h))
