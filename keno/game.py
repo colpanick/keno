@@ -68,11 +68,7 @@ class Game:
                             if self.bet > self.money:
                                 self.bet = self.money
                             if self.money < 1:
-                                self.txt_money.color = RED
-                                self.button_play.disable()
-                                self.button_clear.disable()
-                                self.button_auto.disable()
-                                self.tile_board.disable()
+                                self.game_over()
 
                     if self.button_auto.activated(pos):
                         picks_needed = self.tile_board.max_selection - len(self.tile_board.selected_tiles)
@@ -129,6 +125,13 @@ class Game:
                 self.tile_board.mark_tile_picked(pick)
             self.tile_board.draw_tile(pick)
             pygame.display.update()
+
+    def game_over(self):
+        self.txt_money.color = RED
+        self.button_play.disable()
+        self.button_clear.disable()
+        self.button_auto.disable()
+        self.tile_board.disable()
 
 class Menu():
     def __init__(self, screen):
