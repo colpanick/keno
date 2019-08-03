@@ -8,10 +8,10 @@ from keno.boards import TileBoard, RewardsBoard
 
 
 class Game:
-    def __init__(self, screen, starting_money):
+    def __init__(self, screen, starting_money, starting_bet=1):
         self.screen = screen
         self.money = starting_money
-        self.bet = 1
+        self.bet = starting_bet
 
         self.background_image = pygame.image.load(r"assets\game_bg.jpg")
 
@@ -59,6 +59,8 @@ class Game:
                         self.tile_board.clear_picks()
                         if len(self.tile_board._selected_tiles) > 0:
                             self.money -= self.bet
+                            self.txt_money.msg = f"Money: {self.money}"
+                            self.draw()
                             self.play()
                             self.payout = engine.get_payout(len(self.tile_board.selected_tiles), len(self.tile_board.hit_tiles), self.bet)
                             self.money += self.payout
@@ -129,7 +131,7 @@ class Game:
             pygame.display.update()
 
 class Menu():
-    def __init__(self, screen):
+    def __init__(self, screen, in_game=False):
         self.screen = screen
         self.image_title = Image(self.screen, 250, 35, r"assets\title.png")
         self.button_game = Button(self.screen, 100, 175, 200, 50, "New Game")
@@ -149,7 +151,7 @@ class Menu():
                     pos = pygame.mouse.get_pos()
 
                     if self.button_game.activated(pos):
-                        game = Game(self.screen, 35)
+                        game = Game(self.screen, 1)
                         game.run()
                     elif self.button_quit.activated(pos):
                         done = True
