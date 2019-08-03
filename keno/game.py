@@ -59,7 +59,7 @@ class Game:
                         self.tile_board.clear_picks()
                         if len(self.tile_board._selected_tiles) > 0:
                             self.money -= self.bet
-                            self.play(self.tile_board)
+                            self.play()
                             self.payout = engine.get_payout(len(self.tile_board.selected_tiles), len(self.tile_board.hit_tiles), self.bet)
                             self.money += self.payout
                             self.txt_payout.msg = f"Won: ${self.payout}"
@@ -115,17 +115,17 @@ class Game:
 
         pygame.display.update()
 
-    def play(self, board):
+    def play(self):
         picks = engine.get_random_list(20)
-        selections = board.selected_tiles
-        board.draw_tiles()
+        selections = self.tile_board.selected_tiles
+        self.tile_board.draw_tiles()
         for pick in picks:
             sleep(.25)
             if pick in selections:
-                board.mark_tile_hit(pick)
+                self.tile_board.mark_tile_hit(pick)
             else:
-                board.mark_tile_picked(pick)
-            board.draw_tile(pick)
+                self.tile_board.mark_tile_picked(pick)
+            self.tile_board.draw_tile(pick)
             pygame.display.update()
 
 class Menu():
