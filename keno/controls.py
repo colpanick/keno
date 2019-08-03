@@ -1,6 +1,6 @@
 import pygame
 
-from keno import WHITE, BLUE, RED, GREEN
+from keno import WHITE, BLUE
 
 class Control():
     def __init__(self, screen, x, y, w, h):
@@ -82,23 +82,19 @@ class Button(Control):
 
 class Tile(Button):
     def __init__(self, screen, x, y, size, number, image=None):
-        super().__init__(screen, x, y, size, size, str(number), image=None)
+        super().__init__(screen, x, y, size, size, str(number), image)
         self.number = number
 
 
 
 
 class Text(Control):
-    def __init__(self, screen, x, y, msg, font_name="comicsansms", color=WHITE, size=22):
-        self.screen = screen
-        self.x = x
-        self.y = y
-        self.__msg = msg
 
+    def __init__(self, screen, x, y, msg, font_name="comicsansms", color=WHITE, size=22):
+        self.__msg = msg
         self.font_name = font_name
         self.color = color
         self.size = size
-
         self.font = pygame.font.SysFont(self.font_name, self.size)
         self.text = self.font.render(self.msg, True, self.color)
         self.w, self.h = self.text.get_rect()[2:]
@@ -122,11 +118,7 @@ class Text(Control):
 
 class Image(Control):
     def __init__(self, screen, x, y, filename):
-        self.screen = screen
-        self.x = x
-        self.y = y
         self.filename = filename
-
         self.image = pygame.image.load(filename)
         self.w, self.h = self.image.get_rect()[2:]
 
