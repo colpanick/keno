@@ -131,11 +131,13 @@ class Game:
             pygame.display.update()
 
 class Menu():
-    def __init__(self, screen, in_game=False):
+    def __init__(self, screen):
         self.screen = screen
+        self.in_game = False
         self.image_title = Image(self.screen, 250, 35, r"assets\title.png")
-        self.button_game = Button(self.screen, 100, 175, 200, 50, "New Game")
-        self.button_quit = Button(self.screen, self.button_game.left, self.button_game.bottom + 10, 200, 50, "Quit")
+        self.button_new_game = Button(self.screen, 100, 175, 200, 50, "New Game")
+        self.button_continue = Button(self.screen, self.button_new_game.left, self.button_new_game.bottom + 10, 200, 50, "Continue")
+        self.button_quit = Button(self.screen, self.button_new_game.left, self.button_continue.bottom + 10, 200, 50, "Quit")
         self.background_image = pygame.image.load(r"assets\menu_bg.jpg")
 
     def run(self):
@@ -150,8 +152,11 @@ class Menu():
                 if event.type == pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pressed()[0]:
                     pos = pygame.mouse.get_pos()
 
-                    if self.button_game.activated(pos):
-                        game = Game(self.screen, 1)
+                    if self.button_new_game.activated(pos):
+                        game = Game(self.screen, 35)
+                        game.run()
+                        self.in_game = True
+                    elif self.button_continue.activated(pos):
                         game.run()
                     elif self.button_quit.activated(pos):
                         done = True
@@ -161,7 +166,13 @@ class Menu():
         self.screen.fill(BLACK)
         self.screen.blit(self.background_image, (0,0))
         self.image_title.draw()
-        self.button_game.draw()
+        self.button_new_game.draw()
+        if self.in_game:
+            self.button_continue.enable()
+            self.button_continue.draw()
+        else:
+            self.button_continue.disable()
+
         self.button_quit.draw()
 
         pygame.display.update()
